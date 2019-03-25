@@ -1,4 +1,30 @@
 from twitter import *
+import csv
+import sys
+
+def getGender(name):
+
+    trimmedName = (name.partition(' ')[0]).lower()
+
+    file_female = open("female_names.csv", "r")
+    bigString_female = file_female.read()
+    femaleNames = bigString_female.split(',')
+
+    file_male = open("male_names.csv", "r")
+    bigString_male = file_male.read()
+    maleNames = bigString_male.split(',')
+
+
+
+    for femaleName in femaleNames:
+        if trimmedName == femaleName.lower():
+            return "female"
+
+    for maleName in maleNames:
+        if trimmedName == maleName.lower():
+            return "male"
+
+    return "none"
 
 #authentication for the twitter api
 t = Twitter(
@@ -13,6 +39,7 @@ tweets= tweets_bulk['statuses']
 
 female_count = 0
 male_count = 0
+country_list = []
 
 for tweet in tweets:
 
@@ -31,6 +58,12 @@ for tweet in tweets:
 
     if gender == 'female':
         female_count = female_count + 1
+
+    if tweet['place']!= None:
+        places = tweet['place']
+        if places['country'] != None:
+            country = places['country'];
+            country_list.append(country)
 
 
 
