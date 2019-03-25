@@ -13,6 +13,7 @@ tweets= tweets_bulk['statuses']
 
 female_count = 0
 male_count = 0
+country_list = []
 
 for tweet in tweets:
 
@@ -31,6 +32,12 @@ for tweet in tweets:
 
     if gender == 'female':
         female_count = female_count + 1
+
+    if tweet['place']!= None:
+        places = tweet['place']
+        if places['country'] != None:
+            country = places['country'];
+            country_list.append(country)
 
 
 
