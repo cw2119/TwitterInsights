@@ -13,3 +13,4 @@ tweets= tweets_bulk['statuses']
 
 
 print tweets
+
