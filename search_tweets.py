@@ -34,6 +34,9 @@ t = Twitter(
 
 search_hashtag = raw_input("what do you want to search for?")
 
+tweets_bulk =  t.search.tweets(q= search_hashtag, count=100)
+
+
 #Empty list to hold all tweets
 tweets_bulk = []
 
