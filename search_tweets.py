@@ -3,9 +3,11 @@ from datetime import datetime, timedelta
 import time
 import csv
 import sys
+import operator
 
 def getGender(name):
 
+#
     trimmedName = (name.partition(' ')[0]).lower()
 
     file_female = open("female_names.csv", "r")
@@ -34,9 +36,6 @@ t = Twitter(
 
 search_hashtag = raw_input("what do you want to search for?")
 
-tweets_bulk =  t.search.tweets(q= search_hashtag, count=100)
-
-
 #Empty list to hold all tweets
 tweets_bulk = []
 
@@ -56,6 +55,7 @@ for x in range(7):
 female_count = 0
 male_count = 0
 country_list = []
+top_ten_countries_list = []
 
 country_occurences = {}
 
@@ -67,21 +67,17 @@ for tweet in tweets_bulk:
     #Get the user object from the current tweet
     user = tweet['user']
 
-
-    if user['location'] != None:
+    if user['location'] != '':
         user_country = user['location']
         if user_country in country_occurences:
             country_occurences[user_country] = country_occurences[user_country] +1
         else:
             country_occurences[user_country]=1
 
-
     #Retrieve their name
     name = user['name']
 
     gender = getGender(name)
-
-#    print 'Gender:', gender, ' name: ', name
 
     if gender == 'male':
         male_count = male_count + 1
@@ -89,9 +85,11 @@ for tweet in tweets_bulk:
     if gender == 'female':
         female_count = female_count + 1
 
+sorted_country_occurences = sorted(country_occurences.items(), key=operator.itemgetter(1))
+top_ten_countries_list = sorted_country_occurences[-10:]
+print "Top 10 countries: ", top_ten_countries_list
 
-
-print "country occurences", country_occurences
+#print "country occurences", country_occurences
 #print tweets
 
 print "number of males:", male_count
