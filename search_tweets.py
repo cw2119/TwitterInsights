@@ -14,17 +14,17 @@ import cgi
 
 
 
-#f = open('get_user_input.html','w')
-#message = """<html>
-#<form action ="" method= "POST">
-  #keyword for search:<br>
-#  <input type = "text" name ="keyword_for_search"><br>
- # <input type="submit" value="Submit">
-#</form>
-#</html>"""
+f = open('get_user_input.html','w')
+message = """<html>
+<form action ="" method= "POST">
+  keyword for search:<br>
+  <input type = "text" name ="keyword_for_search"><br>
+  <input type="submit" value="Submit">
+</form>
+</html>"""
 
-#f.write(message)
-#f.close()
+f.write(message)
+f.close()
 #get_user_input = 'file:///Macintosh HD/Users/Cici/Documents/CFG/CodeFirstGirls/Twitter_stuff/' + 'get_user_input.html'
 #webbrowser.open_new_tab(get_user_input)
 
@@ -48,7 +48,7 @@ def hello():
     keyword_for_search = request.form['get_keyword_for_search']
     return keyword_for_search
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 5000)
+    app.run()
 
 hello()
 
