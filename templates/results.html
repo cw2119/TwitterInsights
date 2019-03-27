@@ -17,15 +17,15 @@
 
 <h1>Here are the Results</h1>
 {% if ratio %}
-  <h1 id = genderRatioData>
+  <h1 id = genderRatioData>{{ratio}}</h1>
   <h2>Gender Ratio: {{ ratio }}</h2>
 {% endif %}
 {% if tenCountries %}
-  <h1 id = tenCountriesData>
+  <h1 id = tenCountriesData>{{ tenCountries }}</h1>
   <h2>Most common locations: {{ tenCountries}}<h2>
 {% endif %}
 {% if sentiment %}
-  <h1 id = sentimentData>
+  <h1 id = sentimentData>{{ sentiment }}</h1>
   <h2> The sentiment: {{ sentiment }}<h2>
 {% endif %}
 
