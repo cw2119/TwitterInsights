@@ -126,7 +126,7 @@ def hello():
     polarity = getSentiment(tweets)
     print "polarity = ",polarity
 
-    return render_template('results.html', ratio=gender_ratio, tenCountries=ten_countries, sentiment=polarity )
+    return render_template('results.html', ratio=gender_ratio, tenCountries=ten_countries, sentiment=polarity)
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = 5000)
 
