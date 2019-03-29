@@ -45,7 +45,7 @@ def get_gender_ratio(tweets):
         if gender == 'female':
             female_count = female_count + 1
 #returning ratio of male:female
-    return male_count,":",female_count
+    return str(male_count) + ":" + str(female_count)
 
 
 
@@ -95,6 +95,9 @@ def getCountry(tweets):
 
 def getSentiment(tweets):
     polarity_list = []
+    subjectivity_list =[]
+    positive_tweets = 0
+    negative_tweets = 0
     for tweet in tweets:
         #Get the user object from the current tweet
         user = tweet['user']
@@ -102,11 +105,34 @@ def getSentiment(tweets):
         tweet_texts = tweet['text']
         tweet_text = TextBlob(tweet_texts)
         #getting the polarity for each sentiment and adding this to a list
-        for sentence in tweet_text.sentences:
-            polarity_list.append(sentence.sentiment.polarity)
-    #getting the average polarity
-    polarity_average = np.mean(polarity_list)
-    return polarity_average
+        for word in tweet_text.sentences:
+                #polarity_list.append(word.sentiment.polarity)
+                #subjectivity_list.append(word.sentiment.subjectivity)
+                if word.sentiment.subjectivity>0.6 and word.sentiment.polarity<-0.2:
+                    negative_tweets = negative_tweets +1
+                elif word.sentiment.subjectivity>0.6 and word.sentiment.polarity >0.3:
+                    positive_tweets = positive_tweets +1
+                subjectivity_list.append(word.sentiment.subjectivity)
+        subjectivity_average = np.mean(subjectivity_list)
+        return subjectivity_average
+
+def getOccupation(tweets):
+    occupationOccurences ={}
+    occupations = open("occupation_list.csv", "r")
+    bigString_occupations = occupations.read()
+    occupationList = bigString_occupations.split(',')
+    for tweet in tweets:
+        user = tweet['user']
+        bio = user['description']
+        for occupation in occupationList:
+            if occupation.lower() in bio.lower():
+                if occupation in occupationOccurences:
+                    occupationOccurences[occupation] = occupationOccurences[occupation] +1
+                else:
+                    occupationOccurences[occupation]=1
+    sorted_occupation_occurences = sorted(occupationOccurences.items(), key=operator.itemgetter(1))
+    top_five_occupation = sorted_occupation_occurences[-10:]
+    return top_five_occupation
 
 
 app = Flask(__name__)
@@ -125,8 +151,17 @@ def hello():
     print "10 countries = ", ten_countries
     polarity = getSentiment(tweets)
     print "polarity = ",polarity
+    occupation = getOccupation(tweets)
+    #occupation_keys = occupation.keys()
+    #occupation_items = occupation.items()
+    print "occupation:", occupation
+    occupationNumbers = []
+    for thing in occupation:
+        number = thing.isdigit()
+        occupationNumbers.append(thing)
+    
 
-    return render_template('results.html', ratio=gender_ratio, tenCountries=ten_countries, sentiment=polarity)
+    return render_template('results.html', ratio=gender_ratio, tenCountries=ten_countries, sentiment=polarity, occupation=occupation, occupationNumbers = occupationNumbers)
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = 5000)
 

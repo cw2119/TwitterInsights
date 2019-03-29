@@ -17,32 +17,101 @@
 
 <h1>Here are the Results</h1>
 {% if ratio %}
-  <h1 id = genderRatioData>{{ratio}}</h1>
-  <h2>Gender Ratio: {{ ratio }}</h2>
+  <h1 id="genderRatioData">{{ratio}}</h1>
+  <h2>Gender Ratio: {{ratio}}</h2>
 {% endif %}
 {% if tenCountries %}
-  <h1 id = tenCountriesData>{{ tenCountries }}</h1>
-  <h2>Most common locations: {{ tenCountries}}<h2>
+  <h1 id="tenCountriesData">{{tenCountries}}</h1>
+  <h2>Most common locations: {{tenCountries}}</h2>
+{% endif %}
+{% if polarity %}
+  <h1 id ="polarity">{{sentiment}}</h1>
+  <h2> Sentiment: {{sentiment}}</h2>
+{% endif %}
+{% if occupation %}
+  <h1 id = "occupation">{{occupation}}</h1>
+  <h2>Top 5 Occupations: {{occupation}}</h2>
 {% endif %}
 {% if sentiment %}
-  <h1 id = sentimentData>{{ sentiment }}</h1>
-  <h2> The sentiment: {{ sentiment }}<h2>
+  <h1 id="sentimentData">{{sentiment}}</h1>
+  <h2> The sentiment: {{sentiment}}</h2>
+{% endif %}
+{% if occupationNumbers %}
+  <h1 id="occupationNumbers">{{occupationNumbers}}</h1>
+  <h2> The sentiment: {{occupationNumbers}}</h2>
 {% endif %}
 
-<canvas id="pie-chart" width="800" height="450"></canvas>
+<canvas id="gender-pie-chart" width="800" height="450"></canvas>
+<canvas id="occupation-pie-chart" width="800" height="450"></canvas>
+<canvas id="country-pie-chart" width="800" height="450"></canvas>
+
+
 <script>
-var genderRatio = document.getElementById("genderRatio").innerHTML
+
+//Make gender chart
+var genderRatio = document.getElementById("genderRatioData").innerHTML
 var splitRatio = genderRatio.split(":")
-new Chart(document.getElementById("pie-chart"), {
+new Chart(document.getElementById("gender-pie-chart"), {
     type: 'pie',
     data: {
-      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+      labels: ["Male", "Female"],
       datasets: [{
         label: "Population (millions)",
-        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        backgroundColor: ["#3e95cd", "#8e5ea2"],
         data: [splitRatio[0],splitRatio[1]]
       }]
     },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+
+var occupationNumbers = document.getElementById("occupationNumbers").innerHTML
+new Chart(document.getElementById("occupation-pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["Male", "Female","three","four","five"],
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        data: [occupationNumbers]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+
+
+new Chart(document.getElementById("country-pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["Male", "Female","three","four","five"],
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        data: [occupationNumbers]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+
+//Make Sentiment Chart
+var polarity = document.getElementById("sentimentData").innerHTML;
+var myBarChart = new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: [polarity],
     options: {
       title: {
         display: true,
