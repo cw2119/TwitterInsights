@@ -1,0 +1,34 @@
+#customContainer {
+	margin-top: 10px;
+}
+
+#keywordEntryDiv {
+	width: 40%;
+	margin: auto auto;
+}
+
+#twitter-widget-0 {
+	margin: auto auto
+}
+
+.twitter-tweet {
+	margin: auto auto
+}
+
+.textStyle {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.buttonClass {
+	margin: 10px auto;
+}
+
+.buttonDiv {
+	text-align:center;
+	width:100%;
+}
+
+body {
+	background-color: #38A1F3;
+}

@@ -5,46 +5,52 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styling.css') }}">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
 
-  <title>Hello, world!</title>
+<title>Twitter Insight Results</title>
 </head>
 <title>Search Results</title>
 <body>
-
-<h1>Here are the Results</h1>
 {% if ratio %}
-  <h1 id="genderRatioData">{{ratio}}</h1>
-  <h2>Gender Ratio: {{ratio}}</h2>
+  <h1 id="genderRatioData" hidden>{{ratio}}</h1>
 {% endif %}
 {% if tenCountries %}
-  <h1 id="tenCountriesData">{{tenCountries}}</h1>
-  <h2>Most common locations: {{tenCountries}}</h2>
+  <h1 id="countries" hidden>{{tenCountries}}</h1>
 {% endif %}
 {% if polarity %}
-  <h1 id ="polarity">{{sentiment}}</h1>
-  <h2> Sentiment: {{sentiment}}</h2>
+  <h1 id ="polarity" hidden>{{sentiment}}</h1>
 {% endif %}
 {% if occupation %}
-  <h1 id = "occupation">{{occupation}}</h1>
-  <h2>Top 5 Occupations: {{occupation}}</h2>
+  <h1 id="occupation" hidden>{{occupation}}</h1>
 {% endif %}
 {% if sentiment %}
   <h1 id="sentimentData">{{sentiment}}</h1>
-  <h2> The sentiment: {{sentiment}}</h2>
-{% endif %}
-{% if occupationNumbers %}
-  <h1 id="occupationNumbers">{{occupationNumbers}}</h1>
-  <h2> The sentiment: {{occupationNumbers}}</h2>
 {% endif %}
 
-<canvas id="gender-pie-chart" width="800" height="450"></canvas>
-<canvas id="occupation-pie-chart" width="800" height="450"></canvas>
-<canvas id="country-pie-chart" width="800" height="450"></canvas>
+<div class="container" id="customContainer">
+  <h1 class="display-1 textStyle">Insight Results</h1>
 
+  <table style="width:100%">
+    <tr>
+      <td width="50%" height="50%"><canvas id="gender-pie-chart" width="400" height="225"></canvas></td>
+      <td width="50%" height="50%"><canvas id="occupation-pie-chart" width="400" height="225"></canvas></td>
+    </tr>
+    <tr>
+      <td width="50%" height="50%"> <canvas id="country-pie-chart" width="400" height="225"></canvas></td>
+      <td width="50%" height="50%"><canvas id="sentiment-bar-chart" width = "400" height="225"></canvas></td>
+    </tr>
+  </table>
+  {% if influentialTweet %}
+  <div style="width: 40%; margin: auto auto; text-align:center">
+    <h2>Most Influential Tweet</h2>
+    {{influentialTweet|safe}}
+  </div>
+  {% endif %}
 
 <script>
 
@@ -69,47 +75,68 @@ new Chart(document.getElementById("gender-pie-chart"), {
     }
 });
 
-var occupationNumbers = document.getElementById("occupationNumbers").innerHTML
+//Make occupation chart
+var occupationData = JSON.parse(document.getElementById("occupation").innerHTML)
+
+var occupationNames = [];
+var occupationNumbers = [];
+
+for(i = 0; i<occupationData.length; i++) {
+  occupationNames.push(occupationData[i][0]);
+  occupationNumbers.push(occupationData[i][1]);
+}
+
 new Chart(document.getElementById("occupation-pie-chart"), {
     type: 'pie',
     data: {
-      labels: ["Male", "Female","three","four","five"],
+      labels: occupationNames,
       datasets: [{
-        label: "Population (millions)",
-        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-        data: [occupationNumbers]
+        label: "Top Occupations",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#c35250"],
+        data: occupationNumbers
       }]
     },
     options: {
       title: {
         display: true,
-        text: 'Predicted world population (millions) in 2050'
+        text: 'Most common occupations relating to keyword'
       }
     }
 });
 
+//Make top countries pie chart
+var countryData = JSON.parse(document.getElementById("countries").innerHTML)
+
+var countryNames = [];
+var countryNumbers = [];
+
+for(i = 0; i<countryData.length; i++) {
+  countryNames.push(countryData[i][0]);
+  countryNumbers.push(countryData[i][1]);
+}
 
 new Chart(document.getElementById("country-pie-chart"), {
     type: 'pie',
     data: {
-      labels: ["Male", "Female","three","four","five"],
+      labels: countryNames,
       datasets: [{
-        label: "Population (millions)",
+        label: "Locations",
         backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-        data: [occupationNumbers]
+        data: countryNumbers
       }]
     },
     options: {
       title: {
         display: true,
-        text: 'Predicted world population (millions) in 2050'
+        text: 'Most common locations relating to keywords'
       }
     }
 });
 
 //Make Sentiment Chart
+
 var polarity = document.getElementById("sentimentData").innerHTML;
-var myBarChart = new Chart(document.getElementById("bar-chart"), {
+new Chart(document.getElementById("sentiment-bar-chart"), {
     type: 'bar',
     data: [polarity],
     options: {

@@ -5,25 +5,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styling.css') }}">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Cici Whitcomb CFG</title>
   </head>
   <body>
 
-    <form action ="/retrieveTweetData" method= "POST">
-
-      <div class="container"></div>
-        Enter the word you would like to search for:<br>
+  <div class="container" id="customContainer">
+    <div class="jumbotron">
+      <h1 class="display-1 textStyle">Twitter Insights</h1>
+      <p class="textStyle lead">Enter a keyword below, and click 'Submit' in order to receive useful insights surrounding a keyword.</p>
+      <div id="keywordEntryDiv">
+      <form action ="/retrieveTweetData" method= "POST">
         <div class="input-group input-group-lg">
           <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-lg"></span>
+            <span class="input-group-text" id="inputGroup-sizing-lg">
+              #
+            </span>
           </div>
           <input type="text" name="get_keyword_for_search" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"><br>
         </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+        <div class="buttonDiv">
+          <button type="submit" class="btn btn-primary buttonClass">Submit</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
 
 
     <!-- Optional JavaScript -->

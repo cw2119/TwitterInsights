@@ -8,8 +8,9 @@ import operator
 import numpy as np
 from flask import Flask, render_template, request
 from flask import request
-import webbrowser
-import cgi
+import json
+import os
+import urllib2
 
 #Function makes use of Twitter api to retrieve tweets based on search term passed in
 def get_tweets(search_term):
@@ -90,7 +91,7 @@ def getCountry(tweets):
         #sorting the dict of countries
         sorted_country_occurences = sorted(country_occurences.items(), key=operator.itemgetter(1))
         #adding the 10 most common countries tweeted from to a list
-        top_ten_countries_list = sorted_country_occurences[-10:]
+        top_ten_countries_list = sorted_country_occurences[-5:]
     return top_ten_countries_list
 
 def getSentiment(tweets):
@@ -131,9 +132,21 @@ def getOccupation(tweets):
                 else:
                     occupationOccurences[occupation]=1
     sorted_occupation_occurences = sorted(occupationOccurences.items(), key=operator.itemgetter(1))
-    top_five_occupation = sorted_occupation_occurences[-10:]
+    top_five_occupation = sorted_occupation_occurences[-5:]
     return top_five_occupation
 
+def getTopInfluentialTweets(tweets):
+    most_influential = {}
+
+    tweets.sort(key=lambda x: x['retweet_count'], reverse=True)
+    tweet_id = tweets[0]["id"]
+    print tweet_id
+    #Request HTML from twitterAPI
+    contents = urllib2.urlopen("https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Ftwitter%2Fstatus%2F"+str(tweet_id)).read()
+
+    embeddedContents = json.loads(contents)
+
+    return embeddedContents['html']
 
 app = Flask(__name__)
 @app.route('/')
@@ -149,20 +162,12 @@ def hello():
     print "gender ratio = ",gender_ratio
     ten_countries = getCountry(tweets)
     print "10 countries = ", ten_countries
-    polarity = getSentiment(tweets)
-    print "polarity = ",polarity
+    #polarity = getSentiment(tweets)
+    #print "polarity = ",polarity
     occupation = getOccupation(tweets)
-    #occupation_keys = occupation.keys()
-    #occupation_items = occupation.items()
     print "occupation:", occupation
-    occupationNumbers = []
-    for thing in occupation:
-        number = thing.isdigit()
-        occupationNumbers.append(thing)
-    
-
-    return render_template('results.html', ratio=gender_ratio, tenCountries=ten_countries, sentiment=polarity, occupation=occupation, occupationNumbers = occupationNumbers)
+    influentialTweet = getTopInfluentialTweets(tweets)
+    return render_template('results.html', influentialTweet = influentialTweet, ratio=gender_ratio, tenCountries=json.dumps(ten_countries), occupation=json.dumps(occupation))
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 5000)
-
-hello()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host = '0.0.0.0', port = port)
