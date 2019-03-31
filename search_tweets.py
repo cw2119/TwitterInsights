@@ -158,13 +158,10 @@ def hello():
     #passing key word to get_tweets
     tweets = get_tweets(keyword_for_search)
     gender_ratio = get_gender_ratio(tweets)
-    print "gender ratio = ",gender_ratio
     ten_countries = getCountry(tweets)
-    print "10 countries = ", ten_countries
     #polarity = getSentiment(tweets)
     #print "polarity = ",polarity
     occupation = getOccupation(tweets)
-    print "occupation:", occupation
     influentialTweet = getTopInfluentialTweets(tweets)
     return render_template('results.html', influentialTweet = influentialTweet, ratio=gender_ratio, tenCountries=json.dumps(ten_countries), occupation=json.dumps(occupation))
 if __name__ == '__main__':
