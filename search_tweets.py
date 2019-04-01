@@ -29,26 +29,6 @@ def get_tweets(search_term):
 #returns a list of tweets that have been retrieved by search
     return tweets_bulk
 
-def get_gender_ratio(tweets):
-    female_count = 0
-    male_count = 0
-    for tweet in tweets:
-        #Get the user object from the current tweet
-        user = tweet['user']
-        #get their name from user
-        name = user['name']
-        #send the name to the getGender method to find out if it is male or female
-        gender = getGender(name)
-        #depending on whether name is male or female, add to count
-        if gender == 'male':
-            male_count = male_count + 1
-        if gender == 'female':
-            female_count = female_count + 1
-#returning ratio of male:female
-    return str(male_count) + ":" + str(female_count)
-
-
-
 
 def getGender(name):
     #make names all lower case and take away surnames
@@ -71,6 +51,27 @@ def getGender(name):
         if trimmedName == maleName.lower():
             return "male"
     return "none"
+
+
+def get_gender_ratio(tweets):
+    female_count = 0
+    male_count = 0
+    for tweet in tweets:
+        #Get the user object from the current tweet
+        user = tweet['user']
+        #get their name from user
+        name = user['name']
+        #send the name to the getGender method to find out if it is male or female
+        gender = getGender(name)
+        #depending on whether name is male or female, add to count
+        if gender == 'male':
+            male_count = male_count + 1
+        if gender == 'female':
+            female_count = female_count + 1
+#returning ratio of male:female
+    return str(male_count) + ":" + str(female_count)
+
+
 
 def getCountry(tweets):
     country_list = []
@@ -105,12 +106,12 @@ def getSentiment(tweets):
         tweet_texts = tweet['text']
         tweet_text = TextBlob(tweet_texts)
         #getting the polarity for each sentiment and adding this to a list
-        for word in tweet_text.sentences:
+        for sentence in tweet_text.sentences:
                 #polarity_list.append(word.sentiment.polarity)
                 #subjectivity_list.append(word.sentiment.subjectivity)
-                if word.sentiment.subjectivity>0.6 and word.sentiment.polarity<-0.2:
+                if sentence.sentiment.subjectivity>0.6 and word.sentiment.polarity<-0.2:
                     negative_tweets = negative_tweets +1
-                elif word.sentiment.subjectivity>0.6 and word.sentiment.polarity >0.3:
+                elif sentence.sentiment.subjectivity>0.6 and word.sentiment.polarity >0.3:
                     positive_tweets = positive_tweets +1
                 subjectivity_list.append(word.sentiment.subjectivity)
         subjectivity_average = np.mean(subjectivity_list)
