@@ -11,6 +11,7 @@ from flask import request
 import json
 import os
 import requests
+import urllib2
 
 #Function makes use of Twitter api to retrieve tweets based on search term passed in
 def get_tweets(search_term):
@@ -23,7 +24,7 @@ def get_tweets(search_term):
     d = datetime.today()
     #Perform the API call 10 times, pushing tweets to the list each time
     for x in range(7):
-        these_tweets = t.search.tweets(q= search_term, result_type='recent', until=d.strftime('%Y-%m-%d'), count=100)
+        these_tweets = t.search.tweets(q= search_term, result_type='recent', lang='en', until=d.strftime('%Y-%m-%d'), count=100)
         tweets_bulk.extend(these_tweets['statuses'])
         d = d - timedelta(days=1)
     number_of_tweets_collected = len(tweets_bulk)
@@ -146,9 +147,9 @@ def getTopInfluentialTweets(tweets):
     embeddedContents = json.loads(contents)
 
     URL = embeddedContents['html']
-    r = requests.get(url = URL)
-    data = r.json()
-    return data
+    #r = requests.get(url = URL)
+    #data = r.json()
+    return URL
 
 app = Flask(__name__)
 @app.route('/')
