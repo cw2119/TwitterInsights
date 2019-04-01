@@ -141,7 +141,7 @@ def getTopInfluentialTweets(tweets):
     tweets.sort(key=lambda x: x['retweet_count'], reverse=True)
     tweet_id = tweets[0]["id"]
     #Request HTML from twitterAPI
-    contents = urllib3.urlopen("https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Ftwitter%2Fstatus%2F"+str(tweet_id)).read()
+    contents = urllib2.urlopen("https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Ftwitter%2Fstatus%2F"+str(tweet_id)).read()
 
     embeddedContents = json.loads(contents)
 
