@@ -1,6 +1,5 @@
 #customContainer {
 	margin-top: 10px;
-
 }
 
 #keywordEntryDiv {
@@ -8,15 +7,18 @@
 	margin: auto auto;
 }
 
-#twitter-widget-0 {
-	margin: auto auto
-}
 #homeJumbotron{
-	background-colour:#38A1F3
-	}
+	background-color:#cce9ff;
+}
 
 .twitter-tweet {
-	margin: auto auto
+	margin: auto auto;
+}
+
+.influentialTweetContainer {
+	width: 40%;
+	margin: 50px auto;
+	text-align:center;
 }
 
 .textStyle {
@@ -31,8 +33,4 @@
 .buttonDiv {
 	text-align:center;
 	width:100%;
-}
-
-body {
-	background-color: #38A1F3;
 }

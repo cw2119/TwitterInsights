@@ -10,8 +10,6 @@ from flask import Flask, render_template, request
 from flask import request
 import json
 import os
-import requests
-import urllib2
 
 #Function makes use of Twitter api to retrieve tweets based on search term passed in
 def get_tweets(search_term):
@@ -141,15 +139,8 @@ def getTopInfluentialTweets(tweets):
 
     tweets.sort(key=lambda x: x['retweet_count'], reverse=True)
     tweet_id = tweets[0]["id"]
-    #Request HTML from twitterAPI
-    contents = urllib2.urlopen("https://publish.twitter.com/oembed?url=https%3A%2F%2Ftwitter.com%2Ftwitter%2Fstatus%2F"+str(tweet_id)).read()
 
-    embeddedContents = json.loads(contents)
-
-    URL = embeddedContents['html']
-    #r = requests.get(url = URL)
-    #data = r.json()
-    return URL
+    return tweet_id
 
 app = Flask(__name__)
 @app.route('/')
