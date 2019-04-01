@@ -1,5 +1,6 @@
 #customContainer {
 	margin-top: 10px;
+
 }
 
 #keywordEntryDiv {
@@ -10,6 +11,9 @@
 #twitter-widget-0 {
 	margin: auto auto
 }
+#homeJumbotron{
+	background-colour:#38A1F3
+	}
 
 .twitter-tweet {
 	margin: auto auto
